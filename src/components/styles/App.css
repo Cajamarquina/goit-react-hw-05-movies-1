@@ -1,0 +1,40 @@
+body {
+    padding:40px;
+}
+
+.header-tabs{
+    display: flex;
+    gap:60px;
+}
+
+.list {
+    list-style: none;
+}
+
+.movies-list,
+.actor-list{
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.movie-item{
+    max-width: 250px;
+}
+
+.movie-poster{
+    width: 250px;
+    height: auto;
+}
+
+.movie-title {
+    white-space: wrap;
+    overflow: hidden;
+    width: 100%;
+}
+
+.movie-title::after {
+    content: '\A';
+    white-space: pre;
+  }

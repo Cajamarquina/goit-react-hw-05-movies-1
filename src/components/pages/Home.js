@@ -11,9 +11,11 @@ function Home() {
     async function fetchMovies() {
       try {
         const response = await fetchTrendingMovies();
-        // Sort movies by user score (vote_average) in descending order
-        const sortedMovies = response.results.sort((a, b) => b.vote_average - a.vote_average);
-        setTrendingMovies(sortedMovies);
+        if (response && response.results) {
+          // Sort movies by user score (vote_average) in descending order
+          const sortedMovies = response.results.sort((a, b) => b.vote_average - a.vote_average);
+          setTrendingMovies(sortedMovies);
+        }
       } catch (error) {
         console.error('Error fetching trending movies: ', error);
       }
@@ -21,30 +23,30 @@ function Home() {
     fetchMovies();
   }, []);
 
-
   return (
     <div>
       <h1>Popular Movies</h1>
-      <ul>
+      <ul className="movies-list">
         {trendingMovies.map((movie) => (
-          <li key={movie.id}>
-          <Link to={`movies/${movie.id}`}>
-            <img
-              src={`https://image.tmdb.org/t/p/w185_and_h278_bestv2/${movie.poster_path}`}
-              alt={movie.title}
-            />
-            <p>{movie.title}</p>
+          <li className="movie-item" key={movie.id}>
+            <Link to={`movies/${movie.id}`}>
+              <img
+                src={`https://image.tmdb.org/t/p/w185_and_h278_bestv2/${movie.poster_path}`}
+                alt={movie.title}
+                className="movie-poster"
+              />
+              <p className="movie-title">{movie.title}</p>
             </Link>
           </li>
         ))}
       </ul>
-      <Outlet /> 
+      <Outlet />
     </div>
   );
 }
 
 Home.propTypes = {
-  trendingMovies: PropTypes.array.isRequired,
+  trendingMovies: PropTypes.array, 
 };
 
 export default Home;

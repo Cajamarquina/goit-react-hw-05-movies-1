@@ -1,28 +1,40 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'; 
+import { useParams } from 'react-router-dom';
 import { getMovieCast } from '../API';
 
-function Cast({ match }) {
+function Cast() {
+  const { movieId } = useParams();
   const [cast, setCast] = useState([]);
+
+  const defaultImg = 'https://ireland.apollo.olxcdn.com/v1/files/0iq0gb9ppip8-UA/image;s=1000x700';
 
   useEffect(() => {
     async function fetchMovieCast() {
       try {
-        const response = await getMovieCast(match.params.movieId);
+        const response = await getMovieCast(movieId);
         setCast(response.cast);
       } catch (error) {
         console.error('Error fetching cast information: ', error);
       }
     }
     fetchMovieCast();
-  }, [match.params.movieId]);
+  }, [movieId]);
 
   return (
     <div>
       <h1>Cast Information</h1>
-      <ul>
+      <ul className="actor-list list">
         {cast.map((actor) => (
-          <li key={actor.id}>{actor.name}</li>
+          <li key={actor.id}> 
+          <img
+              src={actor.profile_path ? `https://image.tmdb.org/t/p/w185_and_h278_bestv2/${actor.profile_path}` : defaultImg}
+              alt={actor.name}
+              style={{ maxWidth: '250px' }}
+            />
+            <p>{actor.name}</p>
+            {actor.character && <p>as {actor.character}</p>}
+          </li>
         ))}
       </ul>
     </div>
@@ -30,7 +42,7 @@ function Cast({ match }) {
 }
 
 Cast.propTypes = {
-  match: PropTypes.object.isRequired,
+  cast: PropTypes.array, 
 };
 
 export default Cast;

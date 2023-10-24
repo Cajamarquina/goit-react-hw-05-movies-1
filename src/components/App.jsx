@@ -1,18 +1,28 @@
-import React, { Suspense } from 'react';
-import { BrowserRouter as Router, Route, Routes, Outlet, Link, Navigate } from 'react-router-dom';
+import React, { Suspense , useState } from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Outlet,
+  Link,
+  Navigate,
+} from 'react-router-dom';
+import './styles/App.css';
 
 const Home = React.lazy(() => import('./pages/Home'));
 const Movies = React.lazy(() => import('./pages/Movies'));
-const MovieDetails = React.lazy(() => import('./MovieDetails/MovieDetails'));
+const MovieDetails = React.lazy(() => import('./pages/MovieDetails'));
 const Cast = React.lazy(() => import('./pages/Cast'));
 const Reviews = React.lazy(() => import('./pages/Reviews'));
 
 function App() {
+  const [searchResults, setSearchResults] = useState([]);
+
   return (
     <Router>
       <header>
         <nav>
-          <ul>
+          <ul className="header-tabs list">
             <li>
               <Link to="/">Home</Link>
             </li>
@@ -24,11 +34,11 @@ function App() {
       </header>
       <Routes>
         <Route path="/" element={<Suspense fallback={<div>Loading...</div>}><Home /></Suspense>} />
-        <Route path="movies" element={<Suspense fallback={<div>Loading...</div>}><Movies /></Suspense>} />
+        <Route path="movies" element={<Suspense fallback={<div>Loading...</div>}><Movies setSearchResults={setSearchResults} /></Suspense>} />
         <Route path="movies/:movieId" element={<Suspense fallback={<div>Loading...</div>}><MovieDetails /></Suspense>}>
           <Route index element={<Outlet />} />
-          <Route path="cast" element={<Suspense fallback={<div>Loading...</div>}><Cast /></Suspense>} />
-          <Route path="reviews" element={<Suspense fallback={<div>Loading...</div>}><Reviews /></Suspense>} />
+          <Route path="cast" element={<Cast />} />
+          <Route path="reviews" element={<Reviews />} />
         </Route>
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
