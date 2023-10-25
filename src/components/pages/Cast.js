@@ -32,7 +32,7 @@ function Cast() {
               alt={actor.name}
               style={{ maxWidth: '250px' }}
             />
-            <p>{actor.name}</p>
+            <p><b>{actor.name}</b></p>
             {actor.character && <p>as {actor.character}</p>}
           </li>
         ))}

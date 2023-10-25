@@ -42,16 +42,19 @@ function MovieDetails() {
       {movieDetails && (
         <div>
           <h2>{movieDetails.title}</h2>
+          <div className="movie-details">
           <img
             src={movieDetails.poster_path ? `https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}` : defaultImg}
             alt="poster"
             className="movie-poster"
             style={{ maxWidth: '250px' }}
           />
-          <p>User Score: {movieDetails.vote_average}</p>
-          <p>Overview: {movieDetails.overview}</p>
-          <p>Genres: {movieDetails.genres.map((genre) => genre.name).join(', ')}</p>
-        
+          <span className="movie-info">
+          <p><b>User Score: </b>{movieDetails.vote_average}</p>
+          <p><b>Overview: </b>{movieDetails.overview}</p>
+          <p><b>Genres: </b>{movieDetails.genres.map((genre) => genre.name).join(', ')}</p>
+          </span>
+          </div>
         </div>
       )}
 

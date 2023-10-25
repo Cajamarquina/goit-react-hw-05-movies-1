@@ -38,3 +38,19 @@ body {
     content: '\A';
     white-space: pre;
   }
+
+  .movie-details{
+    display: flex;
+    gap: 30px;
+  }
+
+  .movie-info{
+ display: flex;
+ flex-direction: column;
+  }
+
+  .reviews-list{
+    display: flex;
+    flex-direction: column;
+    gap:30px;
+  }

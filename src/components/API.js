@@ -13,7 +13,7 @@ const axiosInstance = axios.create({
 // Function to fetch trending movies
 export const fetchTrendingMovies = async () => {
   try {
-    const response = await axiosInstance.get(`https://api.themoviedb.org/3/movie/popular`);
+    const response = await axiosInstance.get(`/movie/popular`);
     return response.data;
   } catch (error) {
     throw error;
@@ -23,7 +23,7 @@ export const fetchTrendingMovies = async () => {
 // Function to search for movies by keyword
 export const searchMovies = async (keyword) => {
   try {
-    const response = await axiosInstance.get(`https://api.themoviedb.org/3/search/movie`, {
+    const response = await axiosInstance.get(`/search/movie`, {
       params: {
         query: keyword,
       },
@@ -37,7 +37,7 @@ export const searchMovies = async (keyword) => {
 // Function to get full movie details
 export const getMovieDetails = async (movieId) => {
   try {
-    const response = await axiosInstance.get(`https://api.themoviedb.org/3/movie/${movieId}`);
+    const response = await axiosInstance.get(`/movie/${movieId}`);
     return response.data;
   } catch (error) {
     throw error;
@@ -47,7 +47,7 @@ export const getMovieDetails = async (movieId) => {
 // Function to get cast information for a movie
 export const getMovieCast = async (cast) => {
   try {
-    const response = await axiosInstance.get(`https://api.themoviedb.org/3/movie/${cast}/credits`);
+    const response = await axiosInstance.get(`/movie/${cast}/credits`);
     return response.data;
   } catch (error) {
     throw error;
@@ -58,7 +58,7 @@ export const getMovieCast = async (cast) => {
 // Function to get movie reviews
 export const getMovieReviews = async (reviews) => {
   try {
-    const response = await axiosInstance.get(`https://api.themoviedb.org/3/movie/${reviews}/reviews`);
+    const response = await axiosInstance.get(`/movie/${reviews}/reviews`);
     return response.data;
   } catch (error) {
     throw error;

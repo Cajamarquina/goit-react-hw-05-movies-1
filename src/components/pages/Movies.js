@@ -1,11 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { searchMovies } from '../API';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 function Movies({ setSearchResults }) {
   const [keyword, setKeyword] = useState('');
   const [searchResultsData, setSearchResultsData] = useState([]);
+  const defaultImg = 'https://ireland.apollo.olxcdn.com/v1/files/0iq0gb9ppip8-UA/image;s=1000x700';
+
+  const { movieId } = useParams();
+
+  useEffect(() => {
+    if (!movieId) return;
+  }, [movieId]);
 
   const handleSearch = async () => {
     try {
@@ -35,9 +42,10 @@ function Movies({ setSearchResults }) {
               <li className="movie-item" key={movie.id}>
                 <Link to={`/movies/${movie.id}`}>
                   <img
-                    src={`https://image.tmdb.org/t/p/w185_and_h278_bestv2/${movie.poster_path}`}
+                    src={ movie.poster_path ? `https://image.tmdb.org/t/p/w185_and_h278_bestv2/${movie.poster_path}` : defaultImg}
                     alt={movie.title}
                     className="movie-poster"
+                    style={{ maxWidth: '250px' }}
                   />
                   <p className="movie-title">{movie.title}</p>
                 </Link>
