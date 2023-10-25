@@ -16,7 +16,7 @@ const Cast = React.lazy(() => import('./pages/Cast'));
 const Reviews = React.lazy(() => import('./pages/Reviews'));
 
 function App() {
-  const [searchResults, setSearchResults] = useState([]);
+  const [setSearchResults] = useState([]);
 
   return (
     <Router>

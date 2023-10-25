@@ -23,6 +23,11 @@ function Movies({ setSearchResults }) {
       console.error('Error searching movies: ', error);
     }
   }
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
 
   return (
     <div>
@@ -31,6 +36,7 @@ function Movies({ setSearchResults }) {
         type="text"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
+        onKeyDown={handleKeyDown} 
       />
       <button onClick={handleSearch}>Search</button>
 
