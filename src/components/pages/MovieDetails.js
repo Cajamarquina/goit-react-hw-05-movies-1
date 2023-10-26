@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getMovieDetails, getMovieCast, getMovieReviews } from '../API';
-import { useParams, Link, Outlet, useLocation } from 'react-router-dom';
+import { useParams, Link, Outlet, useNavigate } from 'react-router-dom';
 
 function MovieDetails() {
   const { movieId } = useParams();
@@ -8,8 +8,7 @@ function MovieDetails() {
   const [cast, setCast] = useState([]);
   const [reviews, setReviews] = useState([]);
 
-  const location = useLocation();
-  const backLink = location.state?.from ?? '/';
+  const navigate = useNavigate();
 
   const defaultImg = 'https://ireland.apollo.olxcdn.com/v1/files/0iq0gb9ppip8-UA/image;s=1000x700';
 
@@ -32,15 +31,18 @@ function MovieDetails() {
     fetchMovie();
   }, [movieId]);
 
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
+
   return (
     <div>
-      <Link to={backLink}>
-        <button className="go-back-button">
+         <button className="go-back-button" onClick={handleGoBack}>
           <span className="arrow-icon">←</span> Go back
         </button>
-      </Link>
       {movieDetails && (
-        <div>
+        <div className="movie-details-container">
           <h2>{movieDetails.title}</h2>
           <div className="movie-details">
           <img
@@ -50,9 +52,9 @@ function MovieDetails() {
             style={{ maxWidth: '250px' }}
           />
           <span className="movie-info">
-          <p><b>User Score: </b>{movieDetails.vote_average}</p>
-          <p><b>Overview: </b>{movieDetails.overview}</p>
-          <p><b>Genres: </b>{movieDetails.genres.map((genre) => genre.name).join(', ')}</p>
+          <p><b className="user-score">Rating: </b>{movieDetails.vote_average}</p>
+          <p><b className="overview">Overview: </b>{movieDetails.overview}</p>
+          <p><b className="genres">Genres: </b>{movieDetails.genres.map((genre) => genre.name).join(', ')}</p>
           </span>
           </div>
         </div>

@@ -23,10 +23,10 @@ function Cast() {
 
   return (
     <div>
-      <h1>Cast Information</h1>
+      <h2>Cast Information</h2>
       <ul className="actor-list list">
         {cast.map((actor) => (
-          <li key={actor.id}> 
+          <li className="actor-item" key={actor.id}> 
           <img
               src={actor.profile_path ? `https://image.tmdb.org/t/p/w185_and_h278_bestv2/${actor.profile_path}` : defaultImg}
               alt={actor.name}

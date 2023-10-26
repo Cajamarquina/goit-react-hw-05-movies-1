@@ -1,32 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { searchMovies } from '../API';
-import { Link, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function Movies({ setSearchResults }) {
   const [keyword, setKeyword] = useState('');
   const [searchResultsData, setSearchResultsData] = useState([]);
   const defaultImg = 'https://ireland.apollo.olxcdn.com/v1/files/0iq0gb9ppip8-UA/image;s=1000x700';
-
-  const { movieId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (!movieId) return;
-  }, [movieId]);
+    const storedSearchResults = JSON.parse(localStorage.getItem('searchResults'));
+    if (storedSearchResults) {
+      setSearchResultsData(storedSearchResults);
+      setSearchResults(storedSearchResults);
+    } else {
+      setSearchResultsData([]);
+      setSearchResults([]);
+    }
+  }, [setSearchResults]);
 
   const handleSearch = async () => {
     try {
       const response = await searchMovies(keyword);
+
+      localStorage.setItem('searchResults', JSON.stringify(response.results));
+
       setSearchResultsData(response.results);
       setSearchResults(response.results);
     } catch (error) {
       console.error('Error searching movies: ', error);
     }
   }
+
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       handleSearch();
     }
+  };
+
+  const handleMovieClick = (movieId) => {
+    navigate(`/movies/${movieId}`);
   };
 
   return (
@@ -36,29 +50,35 @@ function Movies({ setSearchResults }) {
         type="text"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
-        onKeyDown={handleKeyDown} 
+        onKeyDown={handleKeyDown}
       />
       <button onClick={handleSearch}>Search</button>
 
-      {searchResultsData.length > 0 && (
+      {searchResultsData.length > 0 ? (
         <div>
           <h2>Results</h2>
           <ul className="movies-list">
             {searchResultsData.map((movie) => (
               <li className="movie-item" key={movie.id}>
-                <Link to={`/movies/${movie.id}`}>
+                <div onClick={() => handleMovieClick(movie.id)}>
                   <img
-                    src={ movie.poster_path ? `https://image.tmdb.org/t/p/w185_and_h278_bestv2/${movie.poster_path}` : defaultImg}
+                    src={
+                      movie.poster_path
+                        ? `https://image.tmdb.org/t/p/w185_and_h278_bestv2/${movie.poster_path}`
+                        : defaultImg
+                    }
                     alt={movie.title}
                     className="movie-poster"
                     style={{ maxWidth: '250px' }}
                   />
                   <p className="movie-title">{movie.title}</p>
-                </Link>
+                </div>
               </li>
             ))}
           </ul>
         </div>
+      ) : (
+        <p>No results were found</p>
       )}
     </div>
   );

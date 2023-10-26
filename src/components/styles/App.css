@@ -5,15 +5,64 @@ body {
 a {
     text-decoration: none;
   }
+
+
+h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
+  } 
   
-.header-tabs{
-    display: flex;
-    gap:60px;
-}
+
 
 .list {
     list-style: none;
 }
+
+header {
+    padding: 10px 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  nav {
+    text-align: center;
+  }
+
+  .header-tabs {
+    list-style: none;
+    padding: 0;
+  }
+
+  .header-tabs li {
+    display: inline;
+    margin: 0 20px;
+  }
+
+  .header-tabs a {
+    text-decoration: none;
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .header-tabs a:hover {
+    text-decoration: underline;
+  }
+
+  .icon-hidden {
+    display: none;
+  }
+
+  .icon-visible {
+    display: inline;
+  }
+  
+  .header-tabs a:hover .icon-hidden {
+    display: inline;
+    font-size: 20px;
+    color: #0074E4;
+    margin-right: 8px;
+  }
 
 .movies-list,
 .actor-list{
@@ -27,11 +76,6 @@ a {
     max-width: 250px;
 }
 
-.movie-poster{
-    width: 250px;
-    height: auto;
-}
-
 .movie-title {
     white-space: wrap;
     overflow: hidden;
@@ -43,15 +87,74 @@ a {
     white-space: pre;
   }
 
+  .movie-details-container {
+    margin-top: 20px;
+    padding: 20px;
+    background: #f7f7f7;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
   .movie-details{
     display: flex;
     gap: 30px;
+    align-items: flex-start;
   }
 
   .movie-info{
  display: flex;
  flex-direction: column;
   }
+
+  .movie-poster {
+    height: auto;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+  }
+
+  .user-score, .overview, .genres {
+    font-size: 16px;
+    margin: 0;
+    margin-bottom: 10px;
+  }
+  
+
+  .go-back-button {
+    display: flex;
+    align-items: center;
+    background: #0074E4;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .go-back-button .arrow-icon {
+    margin-right: 5px;
+  }
+  
+
+.actor-list,
+.review-list {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.actor-item,
+.review-item {
+  max-width: 250px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
   .reviews-list{
     display: flex;

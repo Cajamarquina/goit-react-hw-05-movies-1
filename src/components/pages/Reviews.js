@@ -21,10 +21,10 @@ function Reviews() {
 
   return (
     <div>
-      <h1>Movie Reviews</h1>
-      <ul className="list">
+      <h2>Movie Reviews</h2>
+      <ul className="review-list list">
         {reviews.map((review) => (
-          <li key={review.id}>
+          <li className="review-item" key={review.id}>
             <p><b>Author: </b>{review.author}</p>
             <p>{review.content}</p>
           </li>

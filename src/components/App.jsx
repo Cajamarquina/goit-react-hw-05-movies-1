@@ -1,4 +1,4 @@
-import React, { Suspense , useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import {
   BrowserRouter as Router,
   Route,
@@ -7,6 +7,8 @@ import {
   Link,
   Navigate,
 } from 'react-router-dom';
+import { FaVideo } from 'react-icons/fa';
+
 import './styles/App.css';
 
 const Home = React.lazy(() => import('./pages/Home'));
@@ -16,7 +18,7 @@ const Cast = React.lazy(() => import('./pages/Cast'));
 const Reviews = React.lazy(() => import('./pages/Reviews'));
 
 function App() {
-  const [setSearchResults] = useState([]);
+  const [searchResults, setSearchResults] = useState([]);
 
   return (
     <Router>
@@ -24,17 +26,17 @@ function App() {
         <nav>
           <ul className="header-tabs list">
             <li>
-              <Link to="/">Home</Link>
+              <Link to="/"><span className="icon icon-hidden"><FaVideo /></span>Home</Link>
             </li>
             <li>
-              <Link to="movies">Movies</Link>
+              <Link to="movies"><span className="icon icon-hidden"><FaVideo /></span>Movies</Link>
             </li>
           </ul>
         </nav>
       </header>
       <Routes>
         <Route path="/" element={<Suspense fallback={<div>Loading...</div>}><Home /></Suspense>} />
-        <Route path="movies" element={<Suspense fallback={<div>Loading...</div>}><Movies setSearchResults={setSearchResults} /></Suspense>} />
+        <Route path="movies" element={<Suspense fallback={<div>Loading...</div>}><Movies setSearchResults={setSearchResults} searchResults={searchResults} /></Suspense>} />
         <Route path="movies/:movieId" element={<Suspense fallback={<div>Loading...</div>}><MovieDetails /></Suspense>}>
           <Route index element={<Outlet />} />
           <Route path="cast" element={<Cast />} />
