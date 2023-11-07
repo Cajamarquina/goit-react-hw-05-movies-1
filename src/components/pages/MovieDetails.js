@@ -1,28 +1,17 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { getMovieDetails, getMovieCast, getMovieReviews } from '../API';
-import { useParams, Link, Outlet, useNavigate } from 'react-router-dom';
+import { useParams, Link, Outlet, useLocation} from 'react-router-dom';
 
-export function GoBackBtn() {
-  const navigate = useNavigate();
-  const previousPageRef = useRef();
-
-  const handleGoBack = () => {
-    const previousPage = previousPageRef.current;
-    if (previousPage === '/home' || previousPage === '/movies') {
-      navigate(previousPage);
-    }
-  };
-
-  useEffect(() => {
-    previousPageRef.current = document.referrer;
-  }, []);
+const GoBackBtn = () => {
+  const location = useLocation();
+  const previousPageRef = useRef(location.state?.from);
 
   return (
-    <button className="go-back-button" onClick={handleGoBack}>
+    <Link to={previousPageRef.current || '/'} className="go-back-button">
       <span className="arrow-icon">←</span> Go back
-    </button>
+    </Link>
   );
-}
+};
 
 function MovieDetails() {
   const { movieId } = useParams();

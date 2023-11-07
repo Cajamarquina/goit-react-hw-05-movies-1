@@ -37,8 +37,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Suspense fallback={<div>Loading...</div>}><Home /></Suspense>} />
         <Route path="movies" element={<Suspense fallback={<div>Loading...</div>}><Movies setSearchResults={setSearchResults} searchResults={searchResults} /></Suspense>} />
-        <Route path="movies/:movieId" element={<Suspense fallback={<div>Loading...</div>}><MovieDetails /></Suspense>}>
-          <Route index element={<Outlet />} />
+        <Route path="movies/:movieId/*" element={<Suspense fallback={<div>Loading...</div>}><MovieDetails /></Suspense>}>
+        <Route index element={<Outlet />} />
           <Route path="cast" element={<Cast />} />
           <Route path="reviews" element={<Reviews />} />
         </Route>

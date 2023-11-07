@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { searchMovies } from '../API';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
+import MoviesList from './MoviesList';
 
 function Movies({ setSearchResults }) {
   const [keyword, setKeyword] = useState('');
   const [searchResultsData, setSearchResultsData] = useState([]);
-  const defaultImg = 'https://ireland.apollo.olxcdn.com/v1/files/0iq0gb9ppip8-UA/image;s=1000x700';
-  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const storedSearchResults = JSON.parse(localStorage.getItem('searchResults'));
@@ -31,16 +31,12 @@ function Movies({ setSearchResults }) {
     } catch (error) {
       console.error('Error searching movies: ', error);
     }
-  }
+  };
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       handleSearch();
     }
-  };
-
-  const handleMovieClick = (movieId) => {
-    navigate(`/movies/${movieId}`);
   };
 
   return (
@@ -59,23 +55,10 @@ function Movies({ setSearchResults }) {
           <h2>Results</h2>
           <ul className="movies-list">
             {searchResultsData.map((movie) => (
-              <li className="movie-item" key={movie.id}>
-                <div onClick={() => handleMovieClick(movie.id)}>
-                  <img
-                    src={
-                      movie.poster_path
-                        ? `https://image.tmdb.org/t/p/w185_and_h278_bestv2/${movie.poster_path}`
-                        : defaultImg
-                    }
-                    alt={movie.title}
-                    className="movie-poster"
-                    style={{ maxWidth: '250px' }}
-                  />
-                  <p className="movie-title">{movie.title}</p>
-                </div>
-              </li>
+              <MoviesList key={movie.id} movie={movie} location={location.pathname} /> 
             ))}
           </ul>
+          <Outlet />
         </div>
       ) : (
         <p>No results were found</p>
