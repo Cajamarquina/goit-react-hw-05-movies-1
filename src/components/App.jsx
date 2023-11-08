@@ -21,7 +21,7 @@ function App() {
   const [searchResults, setSearchResults] = useState([]);
 
   return (
-    <Router basename="/filmeum">
+    <Router basename="/goit-react-hw-05-movies">
       <header>
         <nav>
           <ul className="header-tabs list">
