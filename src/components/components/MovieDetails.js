@@ -9,7 +9,7 @@ const GoBackBtn = () => {
   const previousPageRef = useRef(location.state?.from);
 
   return (
-    <Link to={previousPageRef.current || '/filmeum'} className="go-back-button">
+    <Link to={previousPageRef.current || '/goit-react-hw-05-movies'} className="go-back-button">
       <span className="arrow-icon">←</span> Go back
     </Link>
   );
