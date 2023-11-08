@@ -1,13 +1,15 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { getMovieDetails, getMovieCast, getMovieReviews } from '../API';
-import { useParams, Link, Outlet, useLocation} from 'react-router-dom';
+import { getMovieDetails } from '../API';
+import { useParams, Link, Outlet, useLocation } from 'react-router-dom';
+import Cast from '../components/Cast'; 
+import Reviews from '../components/Reviews'; 
 
 const GoBackBtn = () => {
   const location = useLocation();
   const previousPageRef = useRef(location.state?.from);
 
   return (
-    <Link to={previousPageRef.current || '/'} className="go-back-button">
+    <Link to={previousPageRef.current || '/filmeum'} className="go-back-button">
       <span className="arrow-icon">←</span> Go back
     </Link>
   );
@@ -16,35 +18,37 @@ const GoBackBtn = () => {
 function MovieDetails() {
   const { movieId } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
-  const [cast, setCast] = useState([]);
-  const [reviews, setReviews] = useState([]);
-  const [castVisible, setCastVisible] = useState(false);
-  const [reviewsVisible, setReviewsVisible] = useState(false);
+  const [error, setError] = useState(null);
 
   const defaultImg = 'https://ireland.apollo.olxcdn.com/v1/files/0iq0gb9ppip8-UA/image;s=1000x700';
 
   useEffect(() => {
     async function fetchMovie() {
       try {
-        const response = await getMovieDetails(movieId);
-        setMovieDetails(response);
-
-        const castResponse = await getMovieCast(movieId);
-        setCast(castResponse.cast);
-
-        const reviewsResponse = await getMovieReviews(movieId);
-        setReviews(reviewsResponse.results);
+        if (!movieDetails) {
+          const response = await getMovieDetails(movieId);
+          setMovieDetails(response);
+        }
       } catch (error) {
-        console.error('Error fetching movie details: ', error);
+        setError(error);
       }
     }
 
     fetchMovie();
-  }, [movieId]);
+  }, [movieId, movieDetails]);
+
+  if (error) {
+    return (
+      <div>
+        <GoBackBtn className="go-back-button" />
+        <p>Error: Movie not found</p>
+      </div>
+    );
+  }
 
   return (
     <div>
-      <GoBackBtn />
+      <GoBackBtn className="go-back-button" />
       {movieDetails && (
         <div className="movie-details-container">
           <h2>{movieDetails.title}</h2>
@@ -68,20 +72,18 @@ function MovieDetails() {
         <h2>Additional Information</h2>
         <ul className="list">
           <li>
-            <Link to="cast" onClick={() => setCastVisible(!castVisible)}>
-              Cast
-            </Link>
+            <Link to="cast">Cast</Link>
           </li>
           <li>
-            <Link to="reviews" onClick={() => setReviewsVisible(!reviewsVisible)}>
-              Reviews
-            </Link>
+            <Link to="reviews">Reviews</Link>
           </li>
         </ul>
       </div>
 
-      {castVisible && <Outlet cast={cast} />}
-      {reviewsVisible && <Outlet reviews={reviews} />}
+      <Outlet>
+        <Cast />
+        <Reviews />
+      </Outlet>
     </div>
   );
 }

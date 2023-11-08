@@ -1,8 +1,8 @@
 import React, { Suspense, useState } from 'react';
 import {
   BrowserRouter as Router,
-  Route,
   Routes,
+  Route,
   Outlet,
   Link,
   Navigate,
@@ -13,39 +13,59 @@ import './styles/App.css';
 
 const Home = React.lazy(() => import('./pages/Home'));
 const Movies = React.lazy(() => import('./pages/Movies'));
-const MovieDetails = React.lazy(() => import('./pages/MovieDetails'));
-const Cast = React.lazy(() => import('./pages/Cast'));
-const Reviews = React.lazy(() => import('./pages/Reviews'));
+const MovieDetails = React.lazy(() => import('./components/MovieDetails'));
+const Cast = React.lazy(() => import('./components/Cast'));
+const Reviews = React.lazy(() => import('./components/Reviews'));
 
 function App() {
   const [searchResults, setSearchResults] = useState([]);
 
   return (
-    <Router>
+    <Router basename="/filmeum">
       <header>
         <nav>
           <ul className="header-tabs list">
             <li>
-              <Link to="/"><span className="icon icon-hidden"><FaVideo /></span>Home</Link>
+              <Link to="/home">
+                <span className="icon icon-hidden">
+                  <FaVideo />
+                </span>
+                Home
+              </Link>
             </li>
             <li>
-              <Link to="movies"><span className="icon icon-hidden"><FaVideo /></span>Movies</Link>
+              <Link to="/movies">
+                <span className="icon icon-hidden">
+                  <FaVideo />
+                </span>
+                Movies
+              </Link>
             </li>
           </ul>
         </nav>
       </header>
-      <Routes>
-        <Route path="/" element={<Suspense fallback={<div>Loading...</div>}><Home /></Suspense>} />
-        <Route path="movies" element={<Suspense fallback={<div>Loading...</div>}><Movies setSearchResults={setSearchResults} searchResults={searchResults} /></Suspense>} />
-        <Route path="movies/:movieId/*" element={<Suspense fallback={<div>Loading...</div>}><MovieDetails /></Suspense>}>
-        <Route index element={<Outlet />} />
-          <Route path="cast" element={<Cast />} />
-          <Route path="reviews" element={<Reviews />} />
-        </Route>
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="/home" element={<Home />} />
+          <Route path="/home/:movieId" element={<MovieDetails />}>
+  <Route index element={<Outlet />} />
+  <Route path="cast" element={<Cast />} />
+  <Route path="reviews" element={<Reviews />} />
+  </Route>
+
+          <Route path="/movies" element={<Movies setSearchResults={setSearchResults} searchResults={searchResults} />} />
+          <Route path="/movies/:movieId" element={<MovieDetails />}>
+  <Route index element={<Outlet />} />
+  <Route path="cast" element={<Cast />} />
+  <Route path="reviews" element={<Reviews />} />
+  </Route>
+
+          <Route path="/*" element={<Navigate to="/home" />} />
+        </Routes>
+      </Suspense>
     </Router>
   );
 }
+
 
 export default App;

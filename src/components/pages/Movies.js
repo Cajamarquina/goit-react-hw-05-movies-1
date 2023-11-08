@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { searchMovies } from '../API';
-import { Outlet, useLocation } from 'react-router-dom';
-import MoviesList from './MoviesList';
+import { Outlet } from 'react-router-dom';
+import MoviesList from '../components/MoviesList';
 
 function Movies({ setSearchResults }) {
   const [keyword, setKeyword] = useState('');
   const [searchResultsData, setSearchResultsData] = useState([]);
-  const location = useLocation();
 
   useEffect(() => {
     const storedSearchResults = JSON.parse(localStorage.getItem('searchResults'));
@@ -55,7 +54,7 @@ function Movies({ setSearchResults }) {
           <h2>Results</h2>
           <ul className="movies-list">
             {searchResultsData.map((movie) => (
-              <MoviesList key={movie.id} movie={movie} location={location.pathname} /> 
+              <MoviesList key={movie.id} movie={movie} isFromMovies={true}/> 
             ))}
           </ul>
           <Outlet />
